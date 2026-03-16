@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Finance Tools Dashboard</title>
+  <title>FinanzasPro — Financial Tools</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
@@ -22,30 +23,81 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
-    html, body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji; }
-    .tab-active { border-color: rgb(14 165 233); color: rgb(14 165 233); }
-    .card { box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-    .input { @apply w-full rounded-md border border-slate-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/30; }
-    .btn { @apply inline-flex items-center justify-center rounded-md px-4 py-2 font-medium; }
-    .btn-primary { @apply bg-primary text-white hover:bg-sky-600; }
-    .btn-secondary { @apply bg-slate-100 text-slate-800 hover:bg-slate-200; }
-    .badge { @apply inline-block rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700; }
+    :root {
+      --bg: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --card-bg: #f8fafc;
+      --card-border: #e2e8f0;
+      --accent: #0ea5e9;
+      --accent2: #10b981;
+      --input-bg: #ffffff;
+      --shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    html.dark {
+      --bg: #0b1220;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --card-bg: #0f172a;
+      --card-border: #1f2937;
+      --input-bg: #0b1527;
+      --shadow: 0 2px 12px rgba(0,0,0,0.4);
+    }
+    html, body { background: var(--bg); color: var(--text); font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji; }
+    .tab-active { border-color: var(--accent); color: var(--accent); }
+    .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 0.75rem; box-shadow: var(--shadow); }
+    .input { width: 100%; border-radius: 0.5rem; border: 1px solid var(--card-border); background: var(--input-bg); padding: 0.5rem 0.75rem; color: var(--text); outline: none; }
+    .input:focus { box-shadow: 0 0 0 3px rgba(14,165,233,0.25); border-color: var(--accent); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; border-radius: 0.5rem; padding: 0.5rem 1rem; font-weight: 500; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { filter: brightness(0.95); }
+    .btn-secondary { background: #f1f5f9; color: #0f172a; }
+    html.dark .btn-secondary { background: #172036; color: var(--text); }
+    .btn-secondary:hover { filter: brightness(1.05); }
+    .badge { display: inline-block; border-radius: 9999px; background: #f1f5f9; padding: 0.25rem 0.6rem; font-size: 0.75rem; font-weight: 600; color: #334155; }
+    html.dark .badge { background: #172036; color: var(--muted); }
+    header { background: var(--bg); }
+    .subtext { color: var(--muted); }
   </style>
 </head>
-<body class="bg-white text-slate-900">
+<body>
   <header class="border-b border-slate-100">
     <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <div class="h-9 w-9 rounded-md bg-gradient-to-br from-primary to-accent"></div>
         <div>
-          <div class="text-lg font-semibold">Finance Tools</div>
-          <div class="text-xs text-slate-500">Practical tools for smarter decisions</div>
+          <div class="text-lg font-semibold">FinanzasPro</div>
+          <div class="text-xs subtext">Practical tools for smarter decisions</div>
         </div>
       </div>
-      <div class="hidden sm:flex items-center gap-3">
-        <span class="badge">Fast</span>
-        <span class="badge">Lightweight</span>
-        <span class="badge">Mobile-first</span>
+      <div class="flex items-center gap-3">
+        <div class="hidden sm:flex items-center gap-2">
+          <span class="badge">Fast</span>
+          <span class="badge">Lightweight</span>
+          <span class="badge">Responsive</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <label for="currency" class="text-xs subtext">Currency</label>
+          <select id="currency" class="input" style="width:auto; padding:0.35rem 0.5rem">
+            <option>USD</option>
+            <option>EUR</option>
+            <option>CRC</option>
+            <option>MXN</option>
+            <option>ARS</option>
+            <option>COP</option>
+            <option>GBP</option>
+            <option>JPY</option>
+          </select>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs subtext">Dark mode</span>
+          <label class="inline-flex items-center cursor-pointer">
+            <input id="theme-toggle" type="checkbox" class="hidden" />
+            <span class="w-10 h-6 flex items-center bg-slate-200 rounded-full p-1">
+              <span id="theme-knob" class="bg-white w-4 h-4 rounded-full shadow transform transition"></span>
+            </span>
+          </label>
+        </div>
       </div>
     </div>
   </header>
@@ -59,43 +111,49 @@
 
     <section id="tab-personal" class="hidden">
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div class="card rounded-xl border border-slate-100 p-4 lg:col-span-1">
+        <div class="card p-4 lg:col-span-1">
           <div class="mb-4">
             <h2 class="text-lg font-semibold">Personal Finance Planner</h2>
-            <p class="text-sm text-slate-500">Plan budget, debt payoff and savings</p>
+            <p class="text-sm subtext">Plan budget, debt payoff and savings</p>
           </div>
           <div class="space-y-4">
             <div>
-              <label class="text-sm font-medium text-slate-700 flex items-center gap-2" title="Total monthly income after taxes">Monthly income</label>
+              <label class="text-sm font-medium" title="Choose if you carry any debts">Do you have debts?</label>
+              <div class="mt-1">
+                <label class="inline-flex items-center gap-2 mr-4"><input id="pf-hasdebt" type="checkbox" /> <span>Yes</span></label>
+              </div>
+            </div>
+            <div>
+              <label class="text-sm font-medium flex items-center gap-2" title="Total monthly income after taxes">Monthly income</label>
               <input id="pf-income" type="number" min="0" class="input" placeholder="3000" />
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label class="text-sm font-medium text-slate-700" title="Recurring bills like rent, utilities, subscriptions">Fixed expenses</label>
+                <label class="text-sm font-medium" title="Recurring bills like rent, utilities, subscriptions">Fixed expenses</label>
                 <input id="pf-fixed" type="number" min="0" class="input" placeholder="1500" />
               </div>
               <div>
-                <label class="text-sm font-medium text-slate-700" title="Flexible costs like food, transport, entertainment">Variable expenses</label>
+                <label class="text-sm font-medium" title="Flexible costs like food, transport, entertainment">Variable expenses</label>
                 <input id="pf-variable" type="number" min="0" class="input" placeholder="600" />
               </div>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div id="pf-debt-rows" class="grid grid-cols-1 sm:grid-cols-2 gap-4 hidden">
               <div>
-                <label class="text-sm font-medium text-slate-700" title="Total outstanding debt principal">Total debt amount</label>
+                <label class="text-sm font-medium" title="Total outstanding debt principal">Total debt amount</label>
                 <input id="pf-debt" type="number" min="0" class="input" placeholder="8000" />
               </div>
               <div>
-                <label class="text-sm font-medium text-slate-700" title="Annual interest rate (%)">Interest rate of debt (%)</label>
+                <label class="text-sm font-medium" title="Annual interest rate (%)">Interest rate of debt (%)</label>
                 <input id="pf-rate" type="number" min="0" step="0.01" class="input" placeholder="15" />
               </div>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div id="pf-debt-rows-2" class="grid grid-cols-1 sm:grid-cols-2 gap-4 hidden">
               <div>
-                <label class="text-sm font-medium text-slate-700" title="Minimum required monthly payment on debt">Minimum monthly payment</label>
+                <label class="text-sm font-medium" title="Minimum required monthly payment on debt">Minimum monthly payment</label>
                 <input id="pf-minpay" type="number" min="0" class="input" placeholder="150" />
               </div>
               <div>
-                <label class="text-sm font-medium text-slate-700" title="Savings goal as % of income">Savings goal (%)</label>
+                <label class="text-sm font-medium" title="Savings goal as % of income">Savings goal (%)</label>
                 <input id="pf-savepct" type="number" min="0" max="100" step="1" class="input" placeholder="15" />
               </div>
             </div>
@@ -105,22 +163,22 @@
             </div>
           </div>
         </div>
-        <div class="card rounded-xl border border-slate-100 p-4 lg:col-span-2">
+        <div class="card p-4 lg:col-span-2">
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
               <h3 class="mb-2 font-semibold">Budget breakdown</h3>
               <canvas id="pf-budget-chart" height="220"></canvas>
               <div class="mt-3 grid grid-cols-2 gap-2 text-sm" id="pf-summary"></div>
             </div>
-            <div>
+            <div id="pf-debt-section">
               <h3 class="mb-2 font-semibold">Debt payoff timeline</h3>
               <canvas id="pf-debt-chart" height="220"></canvas>
-              <div class="mt-3 text-sm text-slate-600" id="pf-timeline"></div>
+              <div class="mt-3 text-sm subtext" id="pf-timeline"></div>
             </div>
           </div>
           <div class="mt-6">
             <h3 class="mb-2 font-semibold">Suggested habits</h3>
-            <ul id="pf-habits" class="list-disc pl-6 text-sm text-slate-700 space-y-1"></ul>
+            <ul id="pf-habits" class="list-disc pl-6 text-sm space-y-1"></ul>
           </div>
         </div>
       </div>
@@ -128,58 +186,61 @@
 
     <section id="tab-business" class="hidden">
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div class="card rounded-xl border border-slate-100 p-4">
+        <div class="card p-4">
           <h2 class="text-lg font-semibold mb-1">Inventory Rotation</h2>
-          <p class="text-sm text-slate-500 mb-4">How efficiently stock moves</p>
+          <p class="text-sm subtext mb-4">How efficiently stock moves</p>
           <div class="space-y-3">
             <div>
-              <label class="text-sm font-medium text-slate-700" title="Cost of goods sold in the period">COGS</label>
+              <label class="text-sm font-medium" title="Cost of goods sold in the period">COGS</label>
               <input id="inv-cogs" type="number" min="0" class="input" placeholder="25000" />
             </div>
             <div>
-              <label class="text-sm font-medium text-slate-700" title="Average inventory value">Average inventory</label>
+              <label class="text-sm font-medium" title="Average inventory value">Average inventory</label>
               <input id="inv-avg" type="number" min="0" class="input" placeholder="5000" />
             </div>
             <div class="flex items-center gap-3 pt-2">
               <button id="inv-calc" class="btn btn-primary">Calculate</button>
+              <button id="inv-reset" class="btn btn-secondary">Reset</button>
               <div id="inv-out" class="text-sm text-slate-700"></div>
             </div>
           </div>
         </div>
 
-        <div class="card rounded-xl border border-slate-100 p-4">
+        <div class="card p-4">
           <h2 class="text-lg font-semibold mb-1">Debt Analysis</h2>
-          <p class="text-sm text-slate-500 mb-4">Leverage and risk</p>
+          <p class="text-sm subtext mb-4">Leverage and risk</p>
           <div class="space-y-3">
             <div>
-              <label class="text-sm font-medium text-slate-700" title="Sum of liabilities">Total liabilities</label>
+              <label class="text-sm font-medium" title="Sum of liabilities">Total liabilities</label>
               <input id="ba-liab" type="number" min="0" class="input" placeholder="12000" />
             </div>
             <div>
-              <label class="text-sm font-medium text-slate-700" title="Total assets value">Total assets</label>
+              <label class="text-sm font-medium" title="Total assets value">Total assets</label>
               <input id="ba-asset" type="number" min="0" class="input" placeholder="30000" />
             </div>
             <div class="flex items-center gap-3 pt-2">
               <button id="ba-calc" class="btn btn-primary">Calculate</button>
+              <button id="ba-reset" class="btn btn-secondary">Reset</button>
               <div id="ba-out" class="text-sm text-slate-700"></div>
             </div>
           </div>
         </div>
 
-        <div class="card rounded-xl border border-slate-100 p-4">
+        <div class="card p-4">
           <h2 class="text-lg font-semibold mb-1">Cash Flow Snapshot</h2>
-          <p class="text-sm text-slate-500 mb-4">Monthly inflow vs outflow</p>
+          <p class="text-sm subtext mb-4">Monthly inflow vs outflow</p>
           <div class="space-y-3">
             <div>
-              <label class="text-sm font-medium text-slate-700" title="Total monthly revenue">Monthly revenue</label>
+              <label class="text-sm font-medium" title="Total monthly revenue">Monthly revenue</label>
               <input id="cf-rev" type="number" min="0" class="input" placeholder="15000" />
             </div>
             <div>
-              <label class="text-sm font-medium text-slate-700" title="Total monthly expenses">Monthly expenses</label>
+              <label class="text-sm font-medium" title="Total monthly expenses">Monthly expenses</label>
               <input id="cf-exp" type="number" min="0" class="input" placeholder="12000" />
             </div>
             <div class="flex items-center gap-3 pt-2">
               <button id="cf-calc" class="btn btn-primary">Calculate</button>
+              <button id="cf-reset" class="btn btn-secondary">Reset</button>
               <div id="cf-out" class="text-sm text-slate-700"></div>
             </div>
           </div>
@@ -189,43 +250,44 @@
 
     <section id="tab-calculators" class="hidden">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div class="card rounded-xl border border-slate-100 p-4">
+        <div class="card p-4">
           <h2 class="text-lg font-semibold mb-1">Simple Interest</h2>
-          <p class="text-sm text-slate-500 mb-4">Straight-line growth</p>
+          <p class="text-sm subtext mb-4">Straight-line growth</p>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="text-sm font-medium text-slate-700">Principal</label>
+              <label class="text-sm font-medium">Principal</label>
               <input id="si-principal" type="number" min="0" class="input" placeholder="1000" />
             </div>
             <div>
-              <label class="text-sm font-medium text-slate-700">Rate (%)</label>
+              <label class="text-sm font-medium">Rate (%)</label>
               <input id="si-rate" type="number" min="0" step="0.01" class="input" placeholder="5" />
             </div>
             <div>
-              <label class="text-sm font-medium text-slate-700">Time (years)</label>
+              <label class="text-sm font-medium">Time (years)</label>
               <input id="si-time" type="number" min="0" step="0.1" class="input" placeholder="3" />
             </div>
           </div>
           <div class="flex items-center gap-3 pt-3">
             <button id="si-calc" class="btn btn-primary">Calculate</button>
+            <button id="si-reset" class="btn btn-secondary">Reset</button>
             <div id="si-out" class="text-sm text-slate-700"></div>
           </div>
         </div>
 
-        <div class="card rounded-xl border border-slate-100 p-4">
+        <div class="card p-4">
           <h2 class="text-lg font-semibold mb-1">Compound Interest</h2>
-          <p class="text-sm text-slate-500 mb-4">Growth over time</p>
+          <p class="text-sm subtext mb-4">Growth over time</p>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="text-sm font-medium text-slate-700">Initial investment</label>
+              <label class="text-sm font-medium">Initial investment</label>
               <input id="ci-principal" type="number" min="0" class="input" placeholder="5000" />
             </div>
             <div>
-              <label class="text-sm font-medium text-slate-700">Rate (%)</label>
+              <label class="text-sm font-medium">Rate (%)</label>
               <input id="ci-rate" type="number" min="0" step="0.01" class="input" placeholder="7" />
             </div>
             <div>
-              <label class="text-sm font-medium text-slate-700">Compounds per year</label>
+              <label class="text-sm font-medium">Compounds per year</label>
               <select id="ci-freq" class="input">
                 <option value="1">Annually</option>
                 <option value="4">Quarterly</option>
@@ -233,13 +295,14 @@
               </select>
             </div>
             <div>
-              <label class="text-sm font-medium text-slate-700">Time (years)</label>
+              <label class="text-sm font-medium">Time (years)</label>
               <input id="ci-time" type="number" min="0" step="0.1" class="input" placeholder="10" />
             </div>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3">
             <div class="flex items-center gap-3">
               <button id="ci-calc" class="btn btn-primary">Calculate</button>
+              <button id="ci-reset" class="btn btn-secondary">Reset</button>
               <div id="ci-out" class="text-sm text-slate-700"></div>
             </div>
             <div>
@@ -258,4 +321,3 @@
   <script src="./main.js"></script>
 </body>
   </html>
-
